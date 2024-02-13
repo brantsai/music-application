@@ -13,9 +13,7 @@ function App() {
         <span id="avatar"></span>
       </section>
 
-      <div>
-        
-      </div>
+      
 
       {posts.map((post) => {
         return (
