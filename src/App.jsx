@@ -1,9 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [likes, setLikes] = useState(0);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/fileopener')
+      .then(response => response.json())
+      .then(data => {
+        let message = data.data['1'][0].message
+        let postObject = {
+          'message': message,
+          'likes': 0
+        }
+        setPosts([...posts, postObject]);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -25,6 +39,8 @@ function App() {
     <>
       <h1>CS 361 Music App</h1>
 
+      <div><a href="/">Home</a></div>
+
       <section id="profile">
         <h2>Logged in as <span id="displayName"></span></h2>
         <span id="avatar"></span>
@@ -32,7 +48,7 @@ function App() {
 
       <form onSubmit={handleSubmit}>
         <label>
-          Write a post!
+          Write a post or share a song/playlist to your followers!
           <textarea
             name="inputPost"
             rows={4}
